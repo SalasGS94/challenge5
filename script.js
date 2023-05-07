@@ -1,6 +1,81 @@
 // Wrap all code that interacts with the DOM in a call to jQuery to ensure that
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
+var displayEl = $("#hoursContainer");
+var today = dayjs();
+$("#todayEl").text(today);
+
+
+function renderHoursContainer() {
+  var hours = [
+    {convFormat: '1 AM', format24: "01"},
+    {convFormat: '2 AM', format24: "02"},
+    {convFormat: '3 AM', format24: "03"},
+    {convFormat: '4 AM', format24: "04"},
+    {convFormat: '5 AM', format24: "05"},
+    {convFormat: '6 AM', format24: "06"},
+    {convFormat: '7 AM', format24: "07"},
+    {convFormat: '8 AM', format24: "08"},
+    {convFormat: '9 AM', format24: "09"},
+    {convFormat: '10 AM', format24: "10"},
+    {convFormat: '11 AM', format24: "11"},
+    {convFormat: '12 PM', format24: "12"},
+    {convFormat: '1 PM', format24: "13"},
+    {convFormat: '2 PM', format24: "14"},
+    {convFormat: '3 PM', format24: "15"},
+    {convFormat: '4 PM', format24: "16"},
+    {convFormat: '5 PM', format24: "17"},
+    {convFormat: '6 PM', format24: "18"},
+    {convFormat: '7 PM', format24: "19"},
+    {convFormat: '8 PM', format24: "20"},
+    {convFormat: '9 PM', format24: "21"},
+    {convFormat: '10 PM', format24: "22"},
+    {convFormat: '11 PM', format24: "23"},
+    {convFormat: '12 AM', format24: "24"},    
+  ];
+
+  // Dynamically create buttons
+  // Create a for-loop to iterate through the letters array.
+  for (var i = 0; i < hours.length; i++) {
+    
+    if([(today.format("HH"))-7] < hours[i].format24){
+    var hourDivCont = $('<div>');
+    hourDivCont.addClass("row time-block")
+    displayEl.append(hourDivCont);
+    // Create button
+    var hourDiv = $('<div>');
+    // Assign style to the button
+    hourDiv.addClass('col-2 col-md-1 hour text-center py-3');
+    hourDiv.rows = "3";    
+    // Assign the letter to the data-letter attribute
+    // Display the letter
+    hourDiv.text(hours[i].convFormat);
+    // Attach the letter element
+    hourDivCont.append(hourDiv);
+
+    var hourtextarea = $("<textarea>")
+    hourtextarea.addClass("col-8 col-md-10 description")
+    hourDivCont.append(hourtextarea);
+
+    var hourbutton = $("<button>")
+    hourbutton.addClass("btn saveBtn col-2 col-md-1")
+    hourDivCont.append(hourbutton);
+
+    if (today.format("HH") === hours[i].format24){
+      hourDivCont.addClass("present");
+      }else if
+      (today.format("HH") < hours[i].format24)
+      {
+        hourDivCont.addClass("future");
+        console.log(hours[i].format24, today.format("H"));
+      }else{
+        hourDivCont.addClass("past");
+        console.log(hours[i].format24, today.format("H"));
+      }
+  }
+}
+}
+
 $(function () {
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
@@ -21,3 +96,5 @@ $(function () {
   //
   // TODO: Add code to display the current date in the header of the page.
 });
+
+renderHoursContainer()
