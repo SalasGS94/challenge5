@@ -5,7 +5,6 @@ var displayEl = $("#hoursContainer");
 var today = dayjs();
 $("#todayEl").text(today);
 
-
 function renderHoursContainer() {
   var hours = [
     {convFormat: '1 AM', format24: "01"},
@@ -36,9 +35,9 @@ function renderHoursContainer() {
 
   // Dynamically create buttons
   // Create a for-loop to iterate through the letters array.
-  for (var i = 0; i < hours.length; i++) {
-    
-    if([(today.format("HH"))-7] < hours[i].format24){
+  for (var i = 0; i < hours.length; i++) {    
+
+    if(today.format("HH")-4 < hours[i].format24 && hours[i].format24-8 < today.format("HH")){
     var hourDivCont = $('<div>');
     hourDivCont.addClass("row time-block")
     displayEl.append(hourDivCont);
@@ -54,10 +53,16 @@ function renderHoursContainer() {
     hourDivCont.append(hourDiv);
 
     var hourtextarea = $("<textarea>")
+    var Hrs2 = hours[i].convFormat; 
+    hourtextarea.attr('id', Hrs2);
     hourtextarea.addClass("col-8 col-md-10 description")
+    hourtextarea.text("");
     hourDivCont.append(hourtextarea);
 
+
     var hourbutton = $("<button>")
+    var Hrs = hours[i].convFormat; 
+    hourbutton.attr('id', Hrs);
     hourbutton.addClass("btn saveBtn col-2 col-md-1")
     hourDivCont.append(hourbutton);
 
@@ -67,14 +72,29 @@ function renderHoursContainer() {
       (today.format("HH") < hours[i].format24)
       {
         hourDivCont.addClass("future");
-        console.log(hours[i].format24, today.format("H"));
       }else{
         hourDivCont.addClass("past");
-        console.log(hours[i].format24, today.format("H"));
       }
   }
+
+  displayEl.on('click', ".btn", function (event) {
+    event.preventDefault();
+    console.log("Hello");
+    var displayHrs = $(this).siblings('.description').val();
+    var keyHrs = $(event.target).attr('id'); 
+    localStorage.setItem(keyHrs, displayHrs)
+  });
+
+    $("#5 PM").val(localStorage.getItem("5 PM"));
+    $("#6 PM").val(localStorage.getItem("6 PM"));
+    $("#7 PM").val(localStorage.getItem("7 PM"));
+    $("#8 PM").val(localStorage.getItem("8 PM"));
+
+
 }
 }
+
+
 
 $(function () {
   // TODO: Add a listener for click events on the save button. This code should
@@ -97,4 +117,8 @@ $(function () {
   // TODO: Add code to display the current date in the header of the page.
 });
 
-renderHoursContainer()
+renderHoursContainer();
+
+
+
+
